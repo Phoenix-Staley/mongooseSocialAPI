@@ -32,9 +32,9 @@ const userSchema = new Schema({
     ]
 });
 
-userSchema.methods.friendCount = function () {
+userSchema.virtual("friendCount").get(function () {
     return this.friends.length;
-}
+});
 
 const User = new mongoose.model("user", userSchema);
 
