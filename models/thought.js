@@ -12,6 +12,6 @@ thoughtSchema.methods.reactionCount = function () {
     return this.reactions.length;
 }
 
-const Thought = new mongoose.model("thought", reactionSchema);
+const Thought = new mongoose.model("thought", thoughtSchema);
 
 module.exports = Thought;
