@@ -22,6 +22,11 @@ module.exports = {
             .then((newUserData) => res.json(newUserData))
             .catch((err) => res.status(400).json(err));
     },
+    updateOneUser(req, res) {
+        User.updateOne({ _id: req.params.thoughtId }, req.body)
+            .then((updatedUserData) => res.status(201).json(updatedUserData))
+            .catch((err) => res.status(400).json(err));
+    },
     deleteUser(req, res) {
         User.findOne({ _id: req.params.userId })
             .select("-__v")
@@ -36,5 +41,12 @@ module.exports = {
             { $push: { friends: req.params.friendId } })
             .then((updatedUserData) => res.json(updatedUserData))
             .catch((err) => res.status(500).json(err));
+    },
+    removeFriend(req, res) {
+        User.update({ _id: req.params.userId },
+            { $pull: { friends: req.params.friendId } }
+        )
+        .then((updatedUserData) => res.json(updatedUserData))
+        .catch((err) => res.status(500).json(err));
     }
 }
