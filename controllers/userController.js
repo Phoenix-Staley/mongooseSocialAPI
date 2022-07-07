@@ -25,6 +25,6 @@ module.exports = {
         User.update({ _id: req.params.userId },
             { $push: { friends: req.params.friendId } })
             .then((updatedUserData) => res.json(updatedUserData))
-            .catch((err) => res.status(500).json({ message: "Something went wrong" }));
+            .catch((err) => res.status(500).json(err));
     }
 }
