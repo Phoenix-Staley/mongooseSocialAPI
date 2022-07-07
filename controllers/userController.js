@@ -20,5 +20,11 @@ module.exports = {
         User.create(req.body)
             .then((newUserData) => res.json(newUserData))
             .catch((err) => res.status(400).json(err));
+    },
+    addFriend(req, res) {
+        User.update({ _id: req.params.userId },
+            { $push: { friends: req.params.friendId } })
+            .then((updatedUserData) => res.json(updatedUserData))
+            .catch((err) => res.status(500).json({ message: "Something went wrong" }));
     }
 }
