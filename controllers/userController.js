@@ -38,7 +38,7 @@ module.exports = {
             // Deletes the thoughts associated with this user, before deleting the user
             .then((user) => Thought.deleteMany({ _id: { $in: user.thoughts } }))
             .then((wereThoughtsDeleted) => User.deleteOne({ _id: req.params.userId }))
-            .then((wasUserDeleted) => res.status(201).json({ message: `User with ID ${req.params.userId} and their associated thoughts were deleted` }))
+            .then((wasUserDeleted) => res.status(202).json({ message: `User with ID ${req.params.userId} and their associated thoughts were deleted` }))
             .catch((err) => res.status(500).json(err));
     },
     addFriend(req, res) {

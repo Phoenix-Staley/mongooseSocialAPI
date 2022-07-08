@@ -29,7 +29,7 @@ module.exports = {
     },
     deleteThought(req, res) {
         Thought.deleteOne({ _id: req.params.thoughtId })
-            .then((wasDeleted) => res.status(201).json({ message: `Thought with ID ${req.params.thoughtId} was deleted` }))
+            .then((wasDeleted) => res.status(202).json({ message: `Thought with ID ${req.params.thoughtId} was deleted` }))
             .catch((err) => res.status(400).json(err));
     },
     createThought(req, res) {
