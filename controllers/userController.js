@@ -23,8 +23,8 @@ module.exports = {
             .catch((err) => res.status(400).json(err));
     },
     updateOneUser(req, res) {
-        User.updateOne({ _id: req.params.thoughtId }, req.body)
-            .then((updatedUserData) => res.status(201).json(updatedUserData))
+        User.updateOne({ _id: req.params.userId }, req.body)
+            .then((wasUpdated) => res.status(201).json(wasUpdated))
             .catch((err) => res.status(400).json(err));
     },
     deleteUser(req, res) {
@@ -37,13 +37,13 @@ module.exports = {
             .catch((err) => res.status(500).json(err));
     },
     addFriend(req, res) {
-        User.update({ _id: req.params.userId },
+        User.updateOne({ _id: req.params.userId },
             { $push: { friends: req.params.friendId } })
             .then((updatedUserData) => res.json(updatedUserData))
             .catch((err) => res.status(500).json(err));
     },
     removeFriend(req, res) {
-        User.update({ _id: req.params.userId },
+        User.updateOne({ _id: req.params.userId },
             { $pull: { friends: req.params.friendId } }
         )
         .then((updatedUserData) => res.json(updatedUserData))
