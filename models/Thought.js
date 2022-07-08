@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 const reactionSchema = require("./Reaction");
 const formatDate = require("../utils/formatDate");
 
@@ -11,7 +12,8 @@ const thoughtSchema = new mongoose.Schema({
         default: Date.now,
         get: formatDate
     },
-    username: { type: String, required: true, ref: "user" },
+    username: { type: String, required: true },
+    userId: { type: Schema.Types.ObjectId, required: true, ref: "user" },
     reactions: [reactionSchema]
 });
 
