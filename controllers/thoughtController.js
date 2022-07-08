@@ -12,14 +12,19 @@ module.exports = {
             .select("-__v")
             .then((thought) =>
             !thought
-                ? res.status(404).json({ message: "No user with that ID" })
+                ? res.status(404).json({ message: "No thought with that ID" })
                 : res.json(thought)
             )
             .catch((err) => res.status(500).json(err));
     },
     updateOneThought(req, res) {
-        Thought.updateOne({ _id: req.params.thoughtId }, req.body)
-            .then((updatedThoughtData) => res.status(201).json(updatedThoughtData))
+        Thought.findOneAndUpdate({ _id: req.params.thoughtId }, req.body)
+            .then((updatedThoughtData) => res.status(201).json(
+                {
+                    message: `Thought with ID ${req.params.thoughtId} was updated`,
+                    update: req.body
+                }
+            ))
             .catch((err) => res.status(400).json(err));
     },
     deleteThought(req, res) {
@@ -30,11 +35,10 @@ module.exports = {
     createThought(req, res) {
         Thought.create(req.body)
             .then((newThoughtData) => {
-                User.updateOne({ username: req.body.username },
-                    { $push: { thoughts: newThoughtData._id } });
-                return newThoughtData;
+                User.findOneAndUpdate({ _id: req.body.userId },
+                    { $push: { thoughts: newThoughtData._id } })
+                .then((updatedThoughtData) => res.json(newThoughtData));
             })
-            .then((newThoughtData) => res.json(newThoughtData))
             .catch((err) => res.status(400).json(err));
     }
 }

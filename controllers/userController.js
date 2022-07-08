@@ -4,12 +4,17 @@ const Thought = require("../models/Thought");
 module.exports = {
     getUsers(req, res) {
         User.find()
+            .select("-__v")
+            .populate("friends")
+            .populate("thoughts")
             .then((users) => res.json(users))
             .catch((err) => res.status(500).json(err));
     },
     getOneUser(req, res) {
         User.findOne({ _id: req.params.userId })
             .select("-__v")
+            .populate("friends")
+            .populate("thoughts")
             .then((user) =>
             !user
                 ? res.status(404).json({ message: "No user with that ID" })
@@ -23,8 +28,8 @@ module.exports = {
             .catch((err) => res.status(400).json(err));
     },
     updateOneUser(req, res) {
-        User.updateOne({ _id: req.params.userId }, req.body)
-            .then((wasUpdated) => res.status(201).json(wasUpdated))
+        User.findOneAndUpdate({ _id: req.params.userId }, req.body)
+            .then((updatedUserData) => res.status(201).json(updatedUserData))
             .catch((err) => res.status(400).json(err));
     },
     deleteUser(req, res) {
@@ -37,13 +42,13 @@ module.exports = {
             .catch((err) => res.status(500).json(err));
     },
     addFriend(req, res) {
-        User.updateOne({ _id: req.params.userId },
+        User.findOneAndUpdate({ _id: req.params.userId },
             { $push: { friends: req.params.friendId } })
             .then((updatedUserData) => res.json(updatedUserData))
             .catch((err) => res.status(500).json(err));
     },
     removeFriend(req, res) {
-        User.updateOne({ _id: req.params.userId },
+        User.findOneAndUpdate({ _id: req.params.userId },
             { $pull: { friends: req.params.friendId } }
         )
         .then((updatedUserData) => res.json(updatedUserData))
