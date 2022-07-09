@@ -44,14 +44,14 @@ module.exports = {
     addFriend(req, res) {
         User.findOneAndUpdate({ _id: req.params.userId },
             { $push: { friends: req.params.friendId } })
-            .then((updatedUserData) => res.json(updatedUserData))
+            .then((updatedUserData) => res.json({ message: `The user with ID ${req.params.userId} has added a new friend` }))
             .catch((err) => res.status(500).json(err));
     },
     removeFriend(req, res) {
         User.findOneAndUpdate({ _id: req.params.userId },
             { $pull: { friends: req.params.friendId } }
         )
-        .then((updatedUserData) => res.json(updatedUserData))
+        .then((updatedUserData) => res.json({ message: `The user with ID ${req.params.userId} has removed a friend` }))
         .catch((err) => res.status(500).json(err));
     }
 }

@@ -6,7 +6,7 @@ module.exports = {
                 { _id: req.params.thoughtId },
                 { $push: { reactions: req.body } }
             )
-            .then((updatedThoughtData) => res.status(201).json(updatedThoughtData))
+            .then((updatedThoughtData) => res.status(201).json({ message: `A new reaction has been added to the thought with an ID ${req.params.thoughtId}` }))
             .catch((err) => res.status(400).json(err));
     },
     deleteReaction(req,res) {
